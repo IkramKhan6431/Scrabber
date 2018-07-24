@@ -4,6 +4,10 @@ import operator
 
 
 def read_file():
+    """
+    reads file sowpods.txt line by line
+    returns list of strings
+    """
     rack_letters = []
     filepath = 'sowpods.txt'
     with open(filepath) as fp:
@@ -15,6 +19,10 @@ def read_file():
 
 
 def scrabble_score(word):
+    """
+    checks score of single valid word
+    return score
+    """
     scores = {"a": 1, "c": 3, "b": 3, "e": 1, "d": 2, "g": 2,
               "f": 4, "i": 1, "h": 4, "k": 5, "j": 8, "m": 3,
               "l": 1, "o": 1, "n": 1, "q": 10, "p": 3, "s": 1,
@@ -27,6 +35,12 @@ def scrabble_score(word):
 
 
 def count_scores(valid_word_list):
+    """
+    takes valid _word_list
+    calls scrabble_score method
+    makes 2d list of word and scores
+    prints sorted list
+    """
     mylist = []
     count = 0
     for word in valid_word_list:
@@ -44,6 +58,10 @@ def find_valid_words(
         word_list,
         rack_letters
         ):
+    """
+    match all combinations of word_list
+    with given dataset
+    """
     valid_word_list = []
     for word in word_list:
         for rack in rack_letters:
@@ -54,6 +72,9 @@ def find_valid_words(
 
 
 def make_comb(chars):
+    """
+    make all possible combinations of given word
+    """
     word_list = []
     for x in range(1, len(chars)+1):
         t = list(itertools.permutations(chars, x))
@@ -63,6 +84,9 @@ def make_comb(chars):
 
 
 def read_cmd_arg():
+    """
+    reads cmd line args
+    """
     if len(sys.argv) < 2:
         print('Argument Is Missing')
     else:
