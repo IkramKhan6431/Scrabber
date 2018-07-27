@@ -1,7 +1,7 @@
 import sys
 import operator
 
-scores_list = {"a": 1, "c": 3, "b": 3, "e": 1, "d": 2, "g": 2,
+SCORES_LIST = {"a": 1, "c": 3, "b": 3, "e": 1, "d": 2, "g": 2,
                "f": 4, "i": 1, "h": 4, "k": 5, "j": 8, "m": 3,
                "l": 1, "o": 1, "n": 1, "q": 10, "p": 3, "s": 1,
                "r": 1, "u": 1, "t": 1, "w": 4, "v": 4, "y": 4,
@@ -41,10 +41,10 @@ def compute_scrabble_word_score(word):
     compute score of single valid word
     return score
     """
-    global scores_list
+    global SCORES_LIST
     total_score = 0
     for letter in word:
-        total_score += scores_list[letter]
+        total_score += SCORES_LIST[letter]
     return total_score
 
 
