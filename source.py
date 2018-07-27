@@ -8,59 +8,20 @@ scores_list = {"a": 1, "c": 3, "b": 3, "e": 1, "d": 2, "g": 2,
                "x": 8, "z": 10}
 
 
-def read_file(rack_chars_list):
+def find_valid_word_list(rack_chars_list):
     """
     reads file sowpods.txt line by line
-    returns list of strings (valid_word_list)
+    returns list of valid strings (valid_word_list)
     """
     valid_word_list = []
     filepath = 'sowpods.txt'
     with open(filepath) as fp:
         line = fp.readline()
-        new_word = (line.strip()).lower()
         while line:
-            for rack_char in rack_chars_list:
-                if rack_char in new_word:
-                    valid_word_list.append((line.strip()).lower())
+            if match_word(rack_chars_list, (line.strip()).lower()):
+                valid_word_list.append((line.strip()).lower())
             line = fp.readline()
     return valid_word_list
-
-
-def scrabble_score(word):
-    """
-    checks score of single valid word
-    return score
-    """
-    global scores_list
-    total_score = 0
-    for letter in word:
-        total_score += scores_list[letter]
-    return total_score
-
-
-def print_scrable_list(scrable_word_list):
-    """
-    print sorted scrable_list
-    """
-    for scrable_pair in scrable_word_list:
-        print (str(scrable_pair[1]) + "   " + scrable_pair[0])
-    exit()  # exiting the program
-
-
-def count_scores(valid_word_list):
-    """
-    takes valid_word_list
-    calls scrabble_score method
-    makes dictionary of word and scores
-    sorts scrable_word_collection
-    """
-    scrable_word_collection = {}
-    for word in valid_word_list:
-        word_score = scrabble_score(word)
-        scrable_word_collection[word] = word_score
-    sorted_scrable_word_list = sorted(scrable_word_collection.items(),
-                                      key=operator.itemgetter(1), reverse=True)
-    print_scrable_list(sorted_scrable_word_list)
 
 
 def match_word(rack_chars_list, rack_word):
@@ -75,16 +36,41 @@ def match_word(rack_chars_list, rack_word):
     return True
 
 
-def find_valid_words(rack_chars_list, rack_letters_list):
+def compute_scrabble_word_score(word):
     """
-    match all combinations of word_list
-    with given dataset
+    compute score of single valid word
+    return score
     """
-    valid_word_list = []
-    for rack_word in rack_letters_list:
-        if match_word(rack_chars_list, rack_word):
-            valid_word_list.append(rack_word)
-    count_scores(valid_word_list)
+    global scores_list
+    total_score = 0
+    for letter in word:
+        total_score += scores_list[letter]
+    return total_score
+
+
+def compute_scrabble_list_scores(scrable_word_list):
+    """
+    takes valid_word_list
+    calls compute_scrabble_word_score method
+    makes dictionary of word and scores
+    sorts scrable_word_collection
+    return scrable_word_collection
+    """
+    scrable_word_collection = {}
+    for word in scrable_word_list:
+        word_score = compute_scrabble_word_score(word)
+        scrable_word_collection[word] = word_score
+    sorted_scrable_word_list = sorted(scrable_word_collection.items(),
+                                      key=operator.itemgetter(1), reverse=True)
+    return sorted_scrable_word_list
+
+
+def print_scrable_list(scrable_word_list):
+    """
+    print sorted scrable_list
+    """
+    for scrable_pair in scrable_word_list:
+        print (str(scrable_pair[1]) + ",   " + scrable_pair[0])
 
 
 def read_cmd_arg():
@@ -97,7 +83,8 @@ def read_cmd_arg():
     else:
         return str.lower((sys.argv[1]))
 
-
-rack_chars_list = read_cmd_arg()
-rack_letters_list = read_file(rack_chars_list)
-find_valid_words(rack_chars_list, rack_letters_list)
+if __name__ == "__main__":
+    rack_chars_list = read_cmd_arg()
+    scrable_word_list = find_valid_word_list(rack_chars_list)
+    sorted_scrable_word_list = compute_scrabble_list_scores(scrable_word_list)
+    print_scrable_list(sorted_scrable_word_list)
